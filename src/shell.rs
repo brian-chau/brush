@@ -9,11 +9,11 @@ use crate::parser::{expand_variables, parse_command};
 
 // External crates
 use crossterm::{
+    ExecutableCommand,
     cursor::{self, MoveTo, Show},
     event::{self, Event, KeyCode, KeyEvent, KeyModifiers},
-    ExecutableCommand,
     execute,
-    terminal::{Clear, ClearType, disable_raw_mode, enable_raw_mode, LeaveAlternateScreen},
+    terminal::{Clear, ClearType, LeaveAlternateScreen, disable_raw_mode, enable_raw_mode},
 };
 
 pub fn run_shell() {
@@ -35,11 +35,14 @@ pub fn run_shell() {
         // Handle raw input
         loop {
             if event::poll(std::time::Duration::from_millis(100)).expect("Unable to poll") {
-                if let Event::Key(KeyEvent { code, modifiers, .. }) = event::read().unwrap() {
-                match (code, modifiers) {
-                        (KeyCode::Char('c'), KeyModifiers::CONTROL) |
-                        (KeyCode::Char('z'), KeyModifiers::CONTROL) |
-                        (KeyCode::Char('x'), KeyModifiers::CONTROL) => {
+                if let Event::Key(KeyEvent {
+                    code, modifiers, ..
+                }) = event::read().unwrap()
+                {
+                    match (code, modifiers) {
+                        (KeyCode::Char('c'), KeyModifiers::CONTROL)
+                        | (KeyCode::Char('z'), KeyModifiers::CONTROL)
+                        | (KeyCode::Char('x'), KeyModifiers::CONTROL) => {
                             let mut stdout: io::Stdout = io::stdout();
                             let _ = disable_raw_mode();
                             let _ = execute!(stdout, LeaveAlternateScreen, Show);

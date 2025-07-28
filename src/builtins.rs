@@ -11,7 +11,7 @@ use crate::parser::expand_variables;
 use crossterm::{
     cursor::{MoveTo, Show},
     execute,
-    terminal::{Clear, ClearType, disable_raw_mode, LeaveAlternateScreen },
+    terminal::{Clear, ClearType, LeaveAlternateScreen, disable_raw_mode},
 };
 
 pub fn handle_builtin(program: &str, args: &[String], env: &mut Environment) -> bool {
