@@ -16,8 +16,8 @@ pub enum Token {
 }
 
 pub fn tokenize(input: &str) -> Vec<Token> {
-    let mut tokens = Vec::new();
-    let mut chars = input.chars().peekable();
+    let mut tokens: Vec<Token> = Vec::new();
+    let mut chars: std::iter::Peekable<std::str::Chars<'_>> = input.chars().peekable();
 
     while let Some(&ch) = chars.peek() {
         match ch {
@@ -37,7 +37,7 @@ pub fn tokenize(input: &str) -> Vec<Token> {
                 chars.next();
             }
             _ => {
-                let mut word = String::new();
+                let mut word: String = String::new();
                 while let Some(&c) = chars.peek() {
                     if c == ' ' || c == '|' || c == '<' || c == '>' || c == '\n' {
                         break;

@@ -1,6 +1,6 @@
 // Standard libraries
 use std::io::{self, Write};
-use std::process;
+use std::{env, process};
 
 // Project libraries
 use crate::environment::Environment;
@@ -27,14 +27,14 @@ pub fn run_shell() {
     loop {
         // Prompt
         stdout.execute(cursor::MoveToColumn(0)).unwrap();
-        print!("> ");
+        print!("{} > ", env::current_dir().unwrap().display());
         stdout.flush().unwrap();
 
         let mut buffer: String = String::new();
 
         // Handle raw input
         loop {
-            if event::poll(std::time::Duration::from_millis(100)).expect("Unable to poll") {
+            if event::poll(std::time::Duration::from_millis(100)).unwrap() {
                 if let Event::Key(KeyEvent {
                     code, modifiers, ..
                 }) = event::read().unwrap()
@@ -100,7 +100,7 @@ pub fn run_shell() {
                             println!("\nExiting shell.");
                             println!("\033[2J\033[H\033[?1049l");
                             disable_raw_mode().unwrap();
-                            io::stdout().flush().expect("Error msg");
+                            io::stdout().flush().unwrap();
                             return;
                         }
                         _ => {}
@@ -129,7 +129,7 @@ fn redraw_input_line(buffer: &str) {
 
     // Move cursor to beginning of line and clear line
     // \r = carriage return, \x1B[K = ANSI escape to clear line from cursor right
-    write!(stdout, "\r\x1B[K> {}", buffer).expect("error msg");
+    write!(stdout, "\r\x1B[K> {}", buffer).unwrap();
 
-    stdout.flush().expect("Err msg");
+    stdout.flush().unwrap();
 }

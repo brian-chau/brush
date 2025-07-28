@@ -1,3 +1,4 @@
-# BRuSH (Brian's Rust Shell)
+# BRUSH (Basic Rust Shell)
 
-TODO
+Basic extension of the parent shell with additional commands.
+

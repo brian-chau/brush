@@ -24,7 +24,7 @@ pub fn handle_builtin(program: &str, args: &[String], env: &mut Environment) -> 
             true
         }
 
-        "exit" => {
+        "exit" | "quit" => {
             let mut stdout: io::Stdout = io::stdout();
             let _ = disable_raw_mode();
             let _ = execute!(stdout, LeaveAlternateScreen, Show);
@@ -78,7 +78,7 @@ pub fn handle_builtin(program: &str, args: &[String], env: &mut Environment) -> 
             true
         }
         "echo" => {
-            let expanded: String = expand_variables(&args.join(""), &env);
+            let expanded: String = expand_variables(&args.join(" "), &env);
             println!("{}", expanded);
 
             true
